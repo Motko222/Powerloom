@@ -23,7 +23,7 @@ docker_status=$(docker inspect $container | jq -r .[].State.Status)
 height=$(docker container logs $container 2>&1 | grep -a "Current block:" | tail -1 | awk -F "block: " '{print $NF}' | cut -d "|" -f 1 )
 #version=$(docker container logs $container 2>&1 | grep -a "Snapshotter Lite v2 version:" | tail -1 | awk -F "Snapshotter Lite v2 version: " '{print $NF}' | sed 's/\"//g' )
 cd /usr/local/bin
-version=$(./powerloom-snapshotter-cli --version | awk '{print $5}' )
+version=$(./powerloom-snapshotter-cli --version | awk '{print $5}' | sed -r "s/\x1B\[([0-9]{1,3}(;[0-9]{1,2};?)?)?[mGK]//g")
 
 last=$(docker container logs $container 2>&1 | grep -a "Successfully submitted snapshot to local collector" | tail -1 | cut -d "|" -f 1 | tr -d '>' )
 errors=$(docker container logs $container --since 1h 2>&1 | grep -c ERROR)
