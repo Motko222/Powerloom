@@ -17,6 +17,7 @@ fi
 source ~/.bash_profile
 
 container=$(docker ps -a | grep "snapshotter-lite-v2-$SLOT" | awk '{print $NF}')
+SOURCE_RPC_URL=$(grep "^SOURCE_RPC_URL=" /root/snapshotter-lite-v2/mainnet/bds_mainnet_uniswapv3_eth-mainnet/slot-$SLOT/.env-mainnet-BDS_MAINNET_UNISWAPV3-ETH | cut -d'=' -f2-)
 market=$(echo $container | cut -d "-" -f 6)
 token_id=$(echo $container | cut -d "-" -f 4)
 docker_status=$(docker inspect $container | jq -r .[].State.Status)
